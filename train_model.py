@@ -7,9 +7,9 @@ import numpy as np
 from keras import optimizers
 
 drop = 0.5
-
 FILE_PATH = "model\\model.h5"
 IMAGE_SIZE = 224
+batch_size = 64
 
 
 def forward():
@@ -63,7 +63,9 @@ def backward(model):
 	# 这个还行
 	model.compile(optimizer=adam, loss='binary_crossentropy', metrics=['accuracy'])
 
-	model.fit(X_train, Y_train, epochs=15, batch_size=32)
+	model.fit(X_train, Y_train, epochs=15, batch_size=batch_size)
+	# model.fit_generator(generate_batch_size(X_train, Y_train, batch_size, num_classes),
+	#                     steps_per_epoch=(num_classes // batch_size), epochs=15, workers=2)
 
 
 def evaluate_model(model):
