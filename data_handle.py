@@ -26,6 +26,17 @@ def data_handle(path):
 	Y_test = np_utils.to_categorical(y_test)
 
 	num_classes = counter
-	print('handle successful')
+	print('handle successful,', X_train.shape[0])
 	return X_train, X_test, Y_train, Y_test, num_classes
+
+
+# def generate_batch_size(x, y, batch_size, num_classes):
+# 	i = 0
+# 	while True:
+# 		if i < (num_classes // batch_size):
+# 			yield x[i * batch_size: (i + 1) * batch_size], y[i * batch_size: (i + 1) * batch_size]
+# 			i += 1
+#
+# 		# if i == (num_classes // batch_size):
+# 		# 	i = 0
 
