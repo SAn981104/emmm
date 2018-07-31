@@ -14,34 +14,33 @@ IMAGE_SIZE = 224
 
 def forward():
 	model = Sequential()
-	model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu',
-	                 padding='same', dim_ordering='th',
-	                 input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)))
+	model.add(Conv2D(filters=64, kernel_size=3, activation='relu',
+	                 padding='same', data_format='channels_first', input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)))
 
-	model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu', padding='same', dim_ordering='th'))
-	model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
+	model.add(Conv2D(filters=64, kernel_size=3, activation='relu', padding='same', data_format='channels_first'))
+	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
-	model.add(Conv2D(filters=128, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=128, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
+	model.add(Conv2D(filters=128, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=128, kernel_size=3, activation='relu', padding='same'))
+	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
-	model.add(Conv2D(filters=256, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=256, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=256, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=256, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
+	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
+	# model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
+	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	# model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', padding='same'))
-	model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	# model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
 	model.add(Flatten())
 	model.add(Dense(4096, activation='relu'))
@@ -58,7 +57,10 @@ def forward():
 
 
 def backward(model):
-	adam = optimizers.Adam(lr=0.01)
+	adam = optimizers.Adam(lr=0.01, decay=0.1)
+	# 下面这个loss就是个弟弟
+	# model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
+	# 这个还行
 	model.compile(optimizer=adam, loss='binary_crossentropy', metrics=['accuracy'])
 
 	model.fit(X_train, Y_train, epochs=15, batch_size=32)
