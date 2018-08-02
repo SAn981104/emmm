@@ -2,14 +2,15 @@
 from data_handle import data_handle
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Activation, Flatten, Dropout, Conv2D, MaxPooling2D
+from keras.layers.advanced_activations import PReLU
 # from keras.preprocessing import image
 import numpy as np
 from keras import optimizers
 
-drop = 0.5
+drop = 0.3
 FILE_PATH = "model\\model.h5"
 IMAGE_SIZE = 224
-batch_size = 64
+batch_size = 68
 
 
 def forward():
@@ -26,20 +27,29 @@ def forward():
 
 	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
 	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
-	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
 	# model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
+
+	model.add(Conv2D(filters=256, kernel_size=3, activation='relu', padding='same'))
+	# model.add(Conv2D(filters=256, kernel_size=3, activation='linear', padding='same'))
+	# model.add(PReLU())
 	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
 	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
 	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
 	# model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	# model.add(Conv2D(filters=512, kernel_size=3, activation='linear', padding='same'))
+	# model.add(PReLU())
 	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
 	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
 	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
-	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
 	# model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+
+	model.add(Conv2D(filters=512, kernel_size=3, activation='relu', padding='same'))
+	# model.add(Conv2D(filters=512, kernel_size=3, activation='linear', padding='same'))
+	# model.add(PReLU())
 	model.add(MaxPooling2D(pool_size=2, strides=2, padding='same'))
 
 	model.add(Flatten())
@@ -63,7 +73,7 @@ def backward(model):
 	# 这个还行
 	model.compile(optimizer=adam, loss='binary_crossentropy', metrics=['accuracy'])
 
-	model.fit(X_train, Y_train, epochs=15, batch_size=batch_size)
+	model.fit(X_train, Y_train, epochs=5, batch_size=batch_size)
 	# model.fit_generator(generate_batch_size(X_train, Y_train, batch_size, num_classes),
 	#                     steps_per_epoch=(num_classes // batch_size), epochs=15, workers=2)
 
@@ -73,7 +83,7 @@ def evaluate_model(model):
 	loss, accuracy = model.evaluate(X_test, Y_test)
 
 	print('test loss:', loss)
-	print('test accuracy:', accuracy)
+	print('test accuracy:', accuracy * 100)
 
 
 def save(model, file_path=FILE_PATH):
